@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <conio.h>
 #include <pthread.h>
+#include <semaphore.h>
 #include <sched.h>
 #include <unistd.h>
 #include <time.h>
@@ -20,7 +21,7 @@ void llenarMatrix(int tablero[DIM][DIM]);
 void desplazar_seleccionador ();
 int desplazamiento(int *x, int *y, int tecla, int flag, int tablero[DIM][DIM]);
 void cuadroEstructura();
-void cuadroInfo();
+void cuadroInfo(int puntosW, int puntosR);
 void calcularMovimientosPosibles(int tablero[DIM][DIM], int *escape);
 int HabilitadoMover(int tablero[DIM][DIM]);
 void casilleroToMatrix(int x, int y, int *i, int *j);
@@ -33,12 +34,13 @@ void borrarFichaMovida(int i, int j, int tablero[DIM][DIM]);
 void EnterCase(int x, int y, int tablero[DIM][DIM],int fichaC);
 void casilleroToMatrix(int x, int y, int *i, int *j);
 void FichaToMatrix(int x, int y, int *i, int *j);
-void reloj();
+void * reloj(void * args);
 int existeFicha(int ficha,int color);
-void * ejecutar(void *flag);
+void fichasEliminadas(int tablero[DIM][DIM],int * puntosW, int * puntosR);
+void * ejecutar(void *args);
 
 int turno = 1;
-pthread_mutex_t llave;
+sem_t llave;
 
 int main() {
 
@@ -52,12 +54,12 @@ int main() {
     ///Llamadas
     ///introDamas();
 
-    pthread_mutex_init(&llave,NULL);
+    sem_init(&llave,1,0);
 
     pthread_t hilo1, hilo2;
 
-    pthread_create(&hilo1,NULL,ejecutar,(void *)0);
-    pthread_create(&hilo2,NULL,ejecutar,(void *)1);
+    pthread_create(&hilo1,NULL,reloj,NULL);
+    pthread_create(&hilo2,NULL,ejecutar,NULL);
 
     pthread_join(hilo1,NULL);
     pthread_join(hilo2,NULL);
@@ -65,26 +67,36 @@ int main() {
     return EXIT_SUCCESS;
 }
 
-void * ejecutar(void *flag) {
+void * reloj(void * args) {
+    sem_wait(&llave);
+    int minuto, segundo;
 
-    pthread_mutex_lock(&llave);
-    int *bandera = (int *)flag;
-    pthread_mutex_unlock(&llave);
-    pthread_mutex_destroy(&llave);
+        for (minuto=4; minuto>0; minuto-- ) {
+            for (segundo=59; segundo>0; segundo-- ) {
+                // AGREGAMOS UN INTERVALO DE 1000 MS = 1 SEGUNDO
+                Sleep(1000);
+                // IMPRIMIR NUESTRO CRONOMETRO
+                fflush(stdin);
+                color(YELLOW);
+                gotoxy(37,31);
+                printf(" %.2i : %.2i", minuto, segundo);
+            }
+        }
+    sem_post(&llave);
+}
+
+void * ejecutar(void *args) {
+
+    sem_wait(&llave);
     int tablero[DIM][DIM] = {{0},{0}};
 
-    //int turno = 2;
-
-    if(bandera==0) {
-        reloj();
-    }
     indices();
     tablero_damas();
     llenarMatrix(tablero);
     imprimirFichas(tablero);
     cuadroEstructura();
     desplazar_seleccionador(tablero);
-
+    sem_post(&llave);
     return NULL;
 }
 
@@ -111,10 +123,12 @@ void desplazar_seleccionador(int tablero[DIM][DIM]) {
     int y = 1;
     int tecla;
     int flag = 0;
+    int puntosW=0,puntosR=0;
 
     do {
         Sleep(100);
-        cuadroInfo();
+        fichasEliminadas(tablero,&puntosW,&puntosR);
+        cuadroInfo(puntosW,puntosR);
         do {
             fflush(stdin);
             tecla = getch();
@@ -254,7 +268,9 @@ void imprimirMovimientosPosibles(int i, int j, int tipo, int tablero[DIM][DIM], 
             x -= 9;
             ficha(x,y,GREEN);
             moverFicha(x,y,movimiento,tablero,tipo,&escape);
-        } else if(i == 0) {
+        } else if(i == 1) {
+            printf("x: %d y: %d");
+            system("pause>null");
             fichaMaster(x,y,WHITE); ///AGREGAR FICHA MASTER
             system("pause>null");
         } else if(j<7 && j>0) { ///No esta al limite
@@ -297,6 +313,7 @@ void moverFicha(int x, int y, int movimiento, int tablero[DIM][DIM], int fichaC,
     int a,b;
 
     do {
+        Sleep(50);
         do {
             tecla = getch();
             fflush(stdin);
@@ -459,7 +476,7 @@ void posicion_matrix_cuadrado(int *i, int *j) {
     }
 }
 
-void cuadroInfo() {
+void cuadroInfo(int puntosW, int puntosR) {
 ///Texto puntuacion:
     if(turno == 1) {
         color(WHITE);
@@ -482,12 +499,12 @@ void cuadroInfo() {
 ///Texto turno:
     color(WHITE);
     gotoxy(72,35);
-    printf("JUGADOR %c%c: 7",FICHA,FICHA);
+    printf("JUGADOR %c%c: %i",FICHA,FICHA,puntosW);
 
 
     color(RED);
     gotoxy(72,39);
-    printf("JUGADOR %c%c: 9",FICHA,FICHA);
+    printf("JUGADOR %c%c: %i",FICHA,FICHA,puntosR);
 
 ///Texto info:
 
@@ -641,30 +658,9 @@ void tituloDamas() {
 
 }
 
-void reloj() {
-
-    int hora, minuto, segundo;
-
-    for (hora=0; hora<=24; hora++ ) {
-        for (minuto=0; minuto<60; minuto++ ) {
-            for (segundo=0; segundo<60; segundo++ ) {
-                pthread_mutex_lock(&llave);
-                // AGREGAMOS UN INTERVALO DE 1000 MS = 1 SEGUNDO
-                Sleep(1000);
-                // IMPRIMIR NUESTRO CRONOMETRO
-                fflush(stdin);
-                color(YELLOW);
-                gotoxy(37,31);
-                printf(" %.2i : %.2i : %i ", hora, minuto, segundo);
-                pthread_mutex_unlock(&llave);
-            }
-        }
-    }
-}
-
 int existeFicha(int ficha,int color) {
 
-    int bandera = 3;
+    int bandera = 4;
 
     if(color == 1) {
 
@@ -700,7 +696,23 @@ int existeFicha(int ficha,int color) {
 
 }
 
+void fichasEliminadas(int tablero[DIM][DIM],int * puntosW, int * puntosR){
+int i=0,j=0,a=0,b=0;
 
+    for(i=0; i<DIM; i++) {
+        for(j=0; j<DIM; j++) {
+            if(tablero[i][j] == 1 || tablero[i][j] == 3) {
+                a++;
+            } else if(tablero[i][j] == 2 || tablero[i][j] == 4) {
+                b++;
+            }
+        }
+    }
+
+(*puntosW) = 12 - b;
+(*puntosR) = 12 - a;
+
+}
 
 
 

@@ -48,7 +48,7 @@
 
 1539040085 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\resource.rc
 
-1539348017 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\damas.c
+1539358475 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\damas.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
@@ -60,12 +60,13 @@
 
 1539344848 c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\damas.h
 
-1539350019 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\main.c
+1539359343 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\main.c
 	<stdio.h>
 	<stdlib.h>
 	<windows.h>
 	<conio.h>
 	<pthread.h>
+	<semaphore.h>
 	<sched.h>
 	<unistd.h>
 	<time.h>
