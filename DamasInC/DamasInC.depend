@@ -1,0 +1,105 @@
+# depslib dependency file v1.0
+1524786584 source:c:\users\nacho\desktop\codeblocks\c\damasinc\gotoxy.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
+1536629199 source:c:\users\nacho\desktop\codeblocks\c\damasinc\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	"gotoxy.h"
+	"damas.h"
+
+1524786584 c:\users\nacho\desktop\codeblocks\c\damasinc\gotoxy.h
+
+1535556710 source:c:\users\nacho\desktop\codeblocks\c\damasinc\resource.rc
+
+1524786584 source:c:\users\alumno\desktop\damas\damasinc\gotoxy.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
+1535556710 source:c:\users\alumno\desktop\damas\damasinc\resource.rc
+
+1535984403 source:c:\users\alumno\desktop\damas\damasinc\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	"gotoxy.h"
+
+1524786584 c:\users\alumno\desktop\damas\damasinc\gotoxy.h
+
+1536442582 c:\users\nacho\desktop\codeblocks\c\damasinc\damas.h
+
+1536454069 source:c:\users\nacho\desktop\codeblocks\c\damasinc\damas.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	"gotoxy.h"
+	"damas.h"
+
+1539040087 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\gotoxy.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
+1539040085 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\resource.rc
+
+1539348017 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\damas.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	"gotoxy.h"
+	"damas.h"
+
+1539040078 c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\gotoxy.h
+
+1539344848 c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\damas.h
+
+1539350019 source:c:\users\nacho\desktop\trabajo final 2 cuatri\damasinc\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	<pthread.h>
+	<sched.h>
+	<unistd.h>
+	<time.h>
+	"gotoxy.h"
+	"damas.h"
+
+1539007506 source:c:\users\usuario\desktop\proyecto\damas.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	"gotoxy.h"
+	"damas.h"
+
+1539007506 c:\users\usuario\desktop\proyecto\gotoxy.h
+
+1539007506 c:\users\usuario\desktop\proyecto\damas.h
+
+1539007506 source:c:\users\usuario\desktop\proyecto\gotoxy.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+
+1539007506 source:c:\users\usuario\desktop\proyecto\resource.rc
+
+1539013550 source:c:\users\usuario\desktop\proyecto\main.c
+	<stdio.h>
+	<stdlib.h>
+	<windows.h>
+	<conio.h>
+	<pthread.h>
+	<sched.h>
+	<unistd.h>
+	<time.h>
+	"gotoxy.h"
+	"damas.h"
+
